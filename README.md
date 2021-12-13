@@ -1,2 +1,2 @@
 # InternshipIMS
-PyQT5 Application to count inventory (Inventory Management System)
+Electron Application to count inventory (Inventory Management System)
