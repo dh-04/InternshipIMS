@@ -131,3 +131,6 @@ dmypy.json
 
 #Work environments
 .idea
+
+#Database stuff
+db/database.db-journal
