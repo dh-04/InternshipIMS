@@ -25,33 +25,6 @@ class HomeView(QtWidgets.QWidget):
         self.layout.addWidget(self.text)
 
 
-class CheckOutView(QtWidgets.QWidget):
-    """
-       TODO: Checkout view that allows the user to check items out of the stock.
-    """
-    pass
-
-
-class PrintableView(QtWidgets.QWidget):
-    """
-        TODO: Generates a printable view of various statistics. WIP.
-    """
-    pass
-
-
-class ManualEntryView(QtWidgets.QWidget):
-    """
-        TODO: View that allows user to manually change the stock.
-    """
-    pass
-
-
-class SearchView(QtWidgets.QWidget):
-    """
-        TODO: View that allows user to search for a particular item based on material code, material description.
-    """
-    pass
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
