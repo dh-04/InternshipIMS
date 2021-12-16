@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'HomeView.ui'
+# Form implementation generated from reading ui file 'homeview.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -9,6 +9,14 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import pandas as pd
+
+df = pd.read_csv("../db/inventory.csv")
+indices = list(df.index)
+prod_names = list(df.prod_name)
+prod_ids = list(df.prod_id)
+variants = list(df.variant)
+stocks = list(df.stock)
 
 
 class Ui_Dialog(object):
@@ -25,16 +33,46 @@ class Ui_Dialog(object):
         self.textEdit.setGeometry(QtCore.QRect(120, 0, 331, 41))
         self.textEdit.setObjectName("textEdit")
         self.tableWidget = QtWidgets.QTableWidget(Dialog)
-        self.tableWidget.setGeometry(QtCore.QRect(10, 80, 302, 271))
+        self.tableWidget.setGeometry(QtCore.QRect(10, 80, 417, 271))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(3)
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setBold(True)
+        item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setBold(True)
+        item.setFont(font)
+        item.setBackground(QtGui.QColor(255, 255, 255))
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setBold(True)
+        item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setBold(True)
+        item.setFont(font)
+        item.setBackground(QtGui.QColor(255, 255, 255))
+        self.tableWidget.setHorizontalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignCenter)
+        self.tableWidget.setItem(0, 0, item)
+        item = QtWidgets.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignCenter)
+        self.tableWidget.setItem(0, 1, item)
+        item = QtWidgets.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignCenter)
+        self.tableWidget.setItem(0, 2, item)
+        item = QtWidgets.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignCenter)
+        self.tableWidget.setItem(0, 3, item)
 
         self.retranslateUi(Dialog)
         self.buttonBox.accepted.connect(Dialog.accept)
@@ -49,12 +87,28 @@ class Ui_Dialog(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Segoe UI\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt; font-weight:700;\">Company Name</span></p></body></html>"))
+        item = self.tableWidget.verticalHeaderItem(0)
+        item.setText(_translate("Dialog", "1"))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("Dialog", "Product Name"))
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("Dialog", "Product ID"))
         item = self.tableWidget.horizontalHeaderItem(2)
+        item.setText(_translate("Dialog", "Variant"))
+        item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("Dialog", "Stock"))
+        __sortingEnabled = self.tableWidget.isSortingEnabled()
+        self.tableWidget.setSortingEnabled(False)
+        for i in indices:
+            item = self.tableWidget.item(i, 0)
+            item.setText(_translate("Dialog", prod_names[i]))
+            item = self.tableWidget.item(i, 1)
+            item.setText(_translate("Dialog", prod_ids[i]))
+            item = self.tableWidget.item(i, 2)
+            item.setText(_translate("Dialog", variants[i]))
+            item = self.tableWidget.item(i, 3)
+            item.setText(_translate("Dialog", str(stocks[i])))
+        self.tableWidget.setSortingEnabled(__sortingEnabled)
 
 
 if __name__ == "__main__":

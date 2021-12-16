@@ -134,7 +134,7 @@ dmypy.json
 
 #Database stuff
 db/database.db-journal
-
+.sqliterc
 
 #Qt Designer
 .ui
