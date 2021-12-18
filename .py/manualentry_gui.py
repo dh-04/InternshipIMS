@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.ui/ManualEntryView.ui'
+# Form implementation generated from reading ui file '../.ui/ManualEntryView.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -54,6 +54,12 @@ class Ui_Form(object):
         font.setBold(True)
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        self.pushButton_2.setGeometry(QtCore.QRect(550, 530, 211, 41))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setObjectName("pushButton_2")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -65,6 +71,7 @@ class Ui_Form(object):
         self.label_3.setText(_translate("Form", "Product ID"))
         self.pushButton.setText(_translate("Form", "Submit"))
         self.label_6.setText(_translate("Form", "Enter Product ID to manually update stock."))
+        self.pushButton_2.setText(_translate("Form", "Product View"))
 
 
 if __name__ == "__main__":

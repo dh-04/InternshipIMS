@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.ui/ProductView.ui'
+# Form implementation generated from reading ui file '../.ui/ProductView.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -40,6 +40,12 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(3, item)
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(510, 530, 261, 61))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.pushButton.setFont(font)
+        self.pushButton.setObjectName("pushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1241, 22))
@@ -64,6 +70,7 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Variant"))
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "Stock"))
+        self.pushButton.setText(_translate("MainWindow", "Manual Entry"))
 
 
 if __name__ == "__main__":

@@ -5,16 +5,24 @@ from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5 import QtGui, QtCore
 from prodview_gui import Ui_MainWindow
+import manualentry
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.manualentry_disp = []
         self.ui.tableWidget.setColumnWidth(0, 230)
         self.ui.tableWidget.setColumnWidth(1, 150)
         self.ui.tableWidget.setColumnWidth(2, 150)
+        self.ui.pushButton.clicked.connect(self.redirect)
         self.loaddata()
+
+    def redirect(self):
+        self.close()
+        self.manualentry_disp = manualentry.MainWindow()
+        self.manualentry_disp.showFullScreen()
 
     def loaddata(self):
         conn = sqlite3.connect("../db/inventory.db")
