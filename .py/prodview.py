@@ -13,23 +13,27 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.manualentry_disp = []
+        self.conn = []
+        self.cur = []
         self.ui.tableWidget.setColumnWidth(0, 230)
         self.ui.tableWidget.setColumnWidth(1, 150)
         self.ui.tableWidget.setColumnWidth(2, 150)
-        self.ui.pushButton.clicked.connect(self.redirect)
         self.loaddata()
+        self.ui.pushButton.clicked.connect(self.redirect)
+        self.ui.pushButton_2.clicked.connect(self.loaddata)
 
     def redirect(self):
+        self.loaddata()
         self.close()
         self.manualentry_disp = manualentry.MainWindow()
         self.manualentry_disp.showFullScreen()
 
     def loaddata(self):
-        conn = sqlite3.connect("../db/inventory.db")
-        cur = conn.cursor()
-        query = 'SELECT * FROM inventory'
+        self.conn = sqlite3.connect("../db/inventory.db")
+        self.cur = self.conn.cursor()
+        query = 'SELECT * FROM inventory;'
         trow = 0
-        rows = cur.execute(query)
+        rows = self.cur.execute(query)
         self.ui.tableWidget.setRowCount(10)
         for row in rows:
             self.ui.tableWidget.setItem(trow, 0, QtWidgets.QTableWidgetItem(row[1]))
@@ -40,6 +44,8 @@ class MainWindow(QMainWindow):
                 self.ui.tableWidget.setItem(trow, 2, QtWidgets.QTableWidgetItem("N/A"))
             self.ui.tableWidget.setItem(trow, 3, QtWidgets.QTableWidgetItem(str(row[4])))
             trow += 1
+        self.cur.close()
+        self.conn.close()
 
 
 def main():

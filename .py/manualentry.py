@@ -14,6 +14,8 @@ class MainWindow(QDialog):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.ids = []
+        self.conn = []
+        self.cur = []
         self.loaddata()
         self.prodview_disp = prodview.MainWindow()
         self.ui.pushButton.clicked.connect(self.processing)
@@ -25,26 +27,29 @@ class MainWindow(QDialog):
 
 
     def loaddata(self):
-        conn = sqlite3.connect("../db/inventory.db")
-        cur = conn.cursor()
+        self.conn = sqlite3.connect("../db/inventory.db")
+        self.cur = self.conn.cursor()
         query = 'SELECT mat_code FROM inventory;'
-        self.ids = cur.execute(query)
+        self.ids = list(self.cur.execute(query))
+        self.conn.close()
 
 
     def incrementstock(self, prod_id):
-        conn = sqlite3.connect("../db/inventory.db")
-        cur = conn.cursor()
+        self.conn = sqlite3.connect("../db/inventory.db")
+        self.cur = self.conn.cursor()
         query = f"SELECT * FROM inventory WHERE mat_code= '{prod_id}'"
-        prod = cur.execute(query)
+        prod = self.cur.execute(query)
         index = []
         currstock = []
         for el in list(prod):
             index = el[0]
             currstock = el[4]
         updatequery =  f"UPDATE inventory SET stock = {currstock+1} WHERE id = {index}"
-        cur.execute(updatequery)
-        conn.commit()
-#HW100XXXPDXFA-F
+        self.cur.execute(updatequery)
+        self.conn.commit()
+        self.cur.close()
+        self.conn.close()
+
     def processing(self):
 
         lbl = self.ui.label_5
