@@ -20,6 +20,10 @@ class MainWindow(QDialog):
         self.prodview_disp = prodview.MainWindow()
         self.ui.pushButton.clicked.connect(self.processing)
         self.ui.pushButton_2.clicked.connect(self.redirect)
+        self.ui.pushButton_3.clicked.connect(self.close_win)
+
+    def close_win(self):
+        self.close()
 
     def redirect(self):
         self.close()

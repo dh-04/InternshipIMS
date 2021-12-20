@@ -52,6 +52,9 @@ class Ui_MainWindow(object):
         font.setPointSize(14)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_3.setGeometry(QtCore.QRect(1160, 10, 75, 24))
+        self.pushButton_3.setObjectName("pushButton_3")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1241, 22))
@@ -78,6 +81,7 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Stock"))
         self.pushButton.setText(_translate("MainWindow", "Manual Entry"))
         self.pushButton_2.setText(_translate("MainWindow", "Refresh Database"))
+        self.pushButton_3.setText(_translate("MainWindow", "Close"))
 
 
 if __name__ == "__main__":

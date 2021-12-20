@@ -21,6 +21,10 @@ class MainWindow(QMainWindow):
         self.loaddata()
         self.ui.pushButton.clicked.connect(self.redirect)
         self.ui.pushButton_2.clicked.connect(self.loaddata)
+        self.ui.pushButton_3.clicked.connect(self.close_win)
+
+    def close_win(self):
+        self.close()
 
     def redirect(self):
         self.loaddata()

@@ -138,3 +138,6 @@ db/database.db-journal
 
 #Qt Designer
 .ui
+
+#GUI Update files
+.py/guiupdate.bat

@@ -60,6 +60,9 @@ class Ui_Form(object):
         font.setPointSize(14)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_3 = QtWidgets.QPushButton(Form)
+        self.pushButton_3.setGeometry(QtCore.QRect(940, 0, 75, 24))
+        self.pushButton_3.setObjectName("pushButton_3")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -72,6 +75,7 @@ class Ui_Form(object):
         self.pushButton.setText(_translate("Form", "Submit"))
         self.label_6.setText(_translate("Form", "Enter Product ID to manually update stock."))
         self.pushButton_2.setText(_translate("Form", "Product View"))
+        self.pushButton_3.setText(_translate("Form", "Close"))
 
 
 if __name__ == "__main__":
