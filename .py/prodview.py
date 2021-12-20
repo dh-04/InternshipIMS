@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
         self.manualentry_disp.showFullScreen()
 
     def loaddata(self):
-        self.conn = sqlite3.connect("../db/inventory.db")
+        self.conn = sqlite3.connect("..\\db\\inventory.db")
         self.cur = self.conn.cursor()
         query = 'SELECT * FROM inventory;'
         trow = 0

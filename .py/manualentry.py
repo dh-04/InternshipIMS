@@ -27,7 +27,7 @@ class MainWindow(QDialog):
 
 
     def loaddata(self):
-        self.conn = sqlite3.connect("../db/inventory.db")
+        self.conn = sqlite3.connect("..\\db\\inventory.db")
         self.cur = self.conn.cursor()
         query = 'SELECT mat_code FROM inventory;'
         self.ids = list(self.cur.execute(query))
@@ -35,7 +35,7 @@ class MainWindow(QDialog):
 
 
     def incrementstock(self, prod_id):
-        self.conn = sqlite3.connect("../db/inventory.db")
+        self.conn = sqlite3.connect("..\\db\\inventory.db")
         self.cur = self.conn.cursor()
         query = f"SELECT * FROM inventory WHERE mat_code= '{prod_id}'"
         prod = self.cur.execute(query)
