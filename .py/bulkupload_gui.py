@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1097, 592)
+        MainWindow.resize(1097, 649)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -38,7 +38,7 @@ class Ui_MainWindow(object):
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(570, 244, 151, 31))
+        self.label_4.setGeometry(QtCore.QRect(570, 250, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label_4.setFont(font)
@@ -54,12 +54,19 @@ class Ui_MainWindow(object):
         self.pushButton_3.setGeometry(QtCore.QRect(740, 290, 111, 31))
         self.pushButton_3.setObjectName("pushButton_3")
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(580, 180, 191, 31))
+        self.label_5.setGeometry(QtCore.QRect(490, 180, 391, 31))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label_5.setFont(font)
         self.label_5.setText("")
+        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
+        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_4.setGeometry(QtCore.QRect(540, 470, 191, 61))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.pushButton_4.setFont(font)
+        self.pushButton_4.setObjectName("pushButton_4")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1097, 22))
@@ -81,6 +88,7 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Upload"))
         self.pushButton_2.setText(_translate("MainWindow", "Close"))
         self.pushButton_3.setText(_translate("MainWindow", "Confirm Upload"))
+        self.pushButton_4.setText(_translate("MainWindow", "Product View"))
 
 
 if __name__ == "__main__":

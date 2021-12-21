@@ -1,6 +1,7 @@
 import sys
 import sqlite3
 import ntpath
+import csv
 from PyQt5 import QtWidgets
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
@@ -8,6 +9,7 @@ from PyQt5 import QtGui, QtCore
 import pandas as pd
 from bulkupload_gui import Ui_MainWindow
 import manualentry
+import prodview
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -17,9 +19,16 @@ class MainWindow(QMainWindow):
         self.ui.pushButton.clicked.connect(self.getfiles)
         self.ui.pushButton_2.clicked.connect(self.close_win)
         self.ui.pushButton_3.hide()
+        self.ui.pushButton_4.clicked.connect(self.redirect)
+        self.prodview_disp = prodview.MainWindow()
         self.ui.label_4.hide()
-        self.df = []
-        self.ui.pushButton_3.clicked.connect(self.process)
+        self.conn = []
+        self.cur = []
+        self.ids = []
+
+    def redirect(self):
+        self.close()
+        self.prodview_disp.showFullScreen()
 
     def process(self):
         self.ui.label_5.setText("Upload successful.")
@@ -27,17 +36,52 @@ class MainWindow(QMainWindow):
         #Take the dataframe and upload it to the SQL Database
             #Check for errors, check for pre-existing entries and just update stock in that case.
 
+    def loaddata(self):
+        self.conn = sqlite3.connect("..\\db\\inventory.db")
+        self.cur = self.conn.cursor()
+        query = 'SELECT mat_code FROM inventory;'
+        self.ids = list(self.cur.execute(query))
+        self.conn.close()
+
+    def incrementstock(self, prod_id, increasestock):
+        self.conn = sqlite3.connect("..\\db\\inventory.db")
+        self.cur = self.conn.cursor()
+        query = f"SELECT * FROM inventory WHERE mat_code= '{prod_id}'"
+        prod = self.cur.execute(query)
+        index = []
+        currstock = []
+        for el in list(prod):
+            index = el[0]
+            currstock = el[4]
+        updatequery =  f"UPDATE inventory SET stock = {currstock+increasestock} WHERE id = {index}"
+        self.cur.execute(updatequery)
+        print("Query executed", updatequery)
+        self.conn.commit()
+        self.cur.close()
+        self.conn.close()
+
     def getfiles(self):
         title = "Open file"
         filter = "Excel Files(*.csv *.xlsx *.xls)"
-        f = QFileDialog.getOpenFileName(self, title, "../" ,filter)
+        f = QFileDialog.getOpenFileName(self, title, "..\\" ,filter)
         try:
-            self.df = pd.read_csv(f[0])
+            with open(f[0], 'r') as file:
+                dr = csv.DictReader(file)
+                to_db = [(row['index'], row['prod_name'], row['prod_id'], row['variant'], row['stock']) for row in dr]
+                self.loaddata()
+                print(self.ids)
+                for id in self.ids:
+                    for i in to_db:
+                        if id[0] == i[2]:
+                            #Insert into this row.
+                            self.incrementstock(i[2],int(i[4]))
             self.ui.label_4.setText(ntpath.basename(f[0]))
             self.ui.label_4.show()
             self.ui.pushButton.setText("Re-upload")
             self.ui.pushButton_3.show()
-        except Error:
+            self.ui.pushButton_3.clicked.connect(self.process)
+        except FileNotFoundError:
+            self.ui.label_5.setText("File upload unsuccessful. Please try again.")
             print("File upload unsuccessful. Please try again.")
 
 

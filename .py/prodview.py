@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5 import QtGui, QtCore
 from prodview_gui import Ui_MainWindow
 import manualentry
+import bulkupload
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -13,24 +14,32 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.manualentry_disp = []
+        self.bulkentry_disp = []
         self.conn = []
         self.cur = []
         self.ui.tableWidget.setColumnWidth(0, 230)
         self.ui.tableWidget.setColumnWidth(1, 150)
         self.ui.tableWidget.setColumnWidth(2, 150)
         self.loaddata()
-        self.ui.pushButton.clicked.connect(self.redirect)
+        self.ui.pushButton.clicked.connect(self.redirect_manual)
         self.ui.pushButton_2.clicked.connect(self.loaddata)
         self.ui.pushButton_3.clicked.connect(self.close_win)
+        self.ui.pushButton_4.clicked.connect(self.redirect_bulk)
 
     def close_win(self):
         self.close()
 
-    def redirect(self):
+    def redirect_manual(self):
         self.loaddata()
         self.close()
         self.manualentry_disp = manualentry.MainWindow()
         self.manualentry_disp.showFullScreen()
+
+    def redirect_bulk(self):
+        self.loaddata()
+        self.close()
+        self.bulkentry_disp = bulkupload.MainWindow()
+        self.bulkentry_disp.showFullScreen()
 
     def loaddata(self):
         self.conn = sqlite3.connect("..\\db\\inventory.db")
