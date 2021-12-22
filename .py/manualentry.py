@@ -38,7 +38,8 @@ class MainWindow(QDialog):
         self.conn.close()
 
 
-    def incrementstock(self, prod_id):
+    def incrementstock(self, prod_id, stock):
+        #print(stock)
         self.conn = sqlite3.connect("..\\db\\inventory.db")
         self.cur = self.conn.cursor()
         query = f"SELECT * FROM inventory WHERE mat_code= '{prod_id}'"
@@ -48,33 +49,65 @@ class MainWindow(QDialog):
         for el in list(prod):
             index = el[0]
             currstock = el[4]
-        updatequery =  f"UPDATE inventory SET stock = {currstock+1} WHERE id = {index}"
+        updatequery =  f"UPDATE inventory SET stock = {currstock+stock} WHERE id = {index}"
         self.cur.execute(updatequery)
         self.conn.commit()
         self.cur.close()
         self.conn.close()
 
-    def processing(self):
+    def newentry(self, row):
+        print("Entering this function")
+        self.conn = sqlite3.connect("..\\db\\inventory.db")
+        self.cur = self.conn.cursor()
+        query = f"INSERT INTO inventory (mat_desc, mat_code, variant, stock) VALUES ('{row[0]}', '{row[1]}', '{row[2]}', '{int(row[3])}');"
+        print(f"Executing command {query}")
+        self.cur.execute(query)
+        self.conn.commit()
+        self.cur.close()
+        self.conn.close()
 
+    def processing(self):
         lbl = self.ui.label_5
-        lbl.setGeometry(QtCore.QRect(520, 150, 301, 51))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        lbl.setFont(font)
-        input = self.ui.lineEdit_2.text()
-        flag = False
-        if not input:
-            flag = False
+        increase_stock = []
+        flag1 = False #Checks for validity of prod id
+        flag2 = True #Checks for validity of stock count
+        flag3 = True #Checks for validity of prod_name.
+        prod_name = self.ui.lineEdit_2.text()
+        prod_id = self.ui.lineEdit_3.text()
+        variant = self.ui.lineEdit_4.text()
+        try:
+            increase_stock = int(self.ui.lineEdit_5.text())
+        except ValueError:
+            flag2 = False
+        if not prod_id:
+            flag1 = False
         for id in self.ids:
-            if input == id[0]:
-                flag = True
-        if not flag:
-            lbl.setText("Please enter a valid Product ID")
-            self.loaddata()
-        else:
-            #Increment stock of the given prod. ID.
-            self.incrementstock(input)
+            if prod_id == id[0]:
+                while flag2:
+                    self.incrementstock(prod_id, increase_stock)
+                    flag1 = True
+            else:
+                if not prod_name:
+                    flag3 = False
+        if prod_name and prod_id and increase_stock:
+            if not flag1:
+                self.newentry([prod_name, prod_id, variant, increase_stock])
+                flag1 = True
+        #When all 3 flags are True the input is valid
+        if flag1 and flag2 and flag3:
             lbl.setText("Stock updated successfully.")
+            self.loaddata()
+        # When flag1 is False, Product ID is invalid
+        if not flag1 and flag2 and flag3:
+            lbl.setText("Please enter a valid Product ID.")
+            self.loaddata()
+        # When flag2 is False, there is a problem in the stock input
+        elif not flag2:
+            lbl.setText("Please enter a valid stock count.")
+            self.loaddata()
+        #The other two possibilities are both flags being False and flag1 being False, flag2 being True.
+        elif not flag3:
+            lbl.setText("Please enter a valid Product Name.")
             self.loaddata()
 
 

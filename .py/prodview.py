@@ -19,7 +19,8 @@ class MainWindow(QMainWindow):
         self.cur = []
         self.ui.tableWidget.setColumnWidth(0, 230)
         self.ui.tableWidget.setColumnWidth(1, 150)
-        self.ui.tableWidget.setColumnWidth(2, 150)
+        self.ui.tableWidget.setColumnWidth(2, 133)
+        self.ui.tableWidget.setRowCount(self.getrowcount())
         self.loaddata()
         self.ui.pushButton.clicked.connect(self.redirect_manual)
         self.ui.pushButton_2.clicked.connect(self.loaddata)
@@ -41,13 +42,24 @@ class MainWindow(QMainWindow):
         self.bulkentry_disp = bulkupload.MainWindow()
         self.bulkentry_disp.showFullScreen()
 
+    def getrowcount(self):
+        self.conn = sqlite3.connect("..\\db\\inventory.db")
+        self.cur = self.conn.cursor()
+        query = 'SELECT COUNT(*) FROM inventory;'
+        rowcount = self.cur.execute(query)
+        res = []
+        for row in rowcount:
+            res = int(row[0])
+        self.cur.close()
+        self.conn.close()
+        return res
+
     def loaddata(self):
         self.conn = sqlite3.connect("..\\db\\inventory.db")
         self.cur = self.conn.cursor()
         query = 'SELECT * FROM inventory;'
         trow = 0
         rows = self.cur.execute(query)
-        self.ui.tableWidget.setRowCount(10)
         for row in rows:
             self.ui.tableWidget.setItem(trow, 0, QtWidgets.QTableWidgetItem(row[1]))
             self.ui.tableWidget.setItem(trow, 1, QtWidgets.QTableWidgetItem(row[2]))

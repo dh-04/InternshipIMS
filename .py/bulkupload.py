@@ -33,8 +33,6 @@ class MainWindow(QMainWindow):
     def process(self):
         self.ui.label_5.setText("Upload successful.")
         self.ui.pushButton_3.hide()
-        #Take the dataframe and upload it to the SQL Database
-            #Check for errors, check for pre-existing entries and just update stock in that case.
 
     def loaddata(self):
         self.conn = sqlite3.connect("..\\db\\inventory.db")
@@ -55,12 +53,24 @@ class MainWindow(QMainWindow):
             currstock = el[4]
         updatequery =  f"UPDATE inventory SET stock = {currstock+increasestock} WHERE id = {index}"
         self.cur.execute(updatequery)
-        print("Query executed", updatequery)
+        self.conn.commit()
+        self.cur.close()
+        self.conn.close()
+
+    def newentry(self, row):
+        print("Entering this function")
+        self.conn = sqlite3.connect("..\\db\\inventory.db")
+        self.cur = self.conn.cursor()
+        query = f"INSERT INTO inventory (mat_desc, mat_code, variant, stock) VALUES ('{row[1]}', '{row[2]}', '{row[3]}', '{int(row[4])}');"
+        print(f"Executing command {query}")
+        self.cur.execute(query)
         self.conn.commit()
         self.cur.close()
         self.conn.close()
 
     def getfiles(self):
+        self.ui.label_5.clear()
+        self.ui.pushButton_3.hide()
         title = "Open file"
         filter = "Excel Files(*.csv *.xlsx *.xls)"
         f = QFileDialog.getOpenFileName(self, title, "..\\" ,filter)
@@ -69,20 +79,35 @@ class MainWindow(QMainWindow):
                 dr = csv.DictReader(file)
                 to_db = [(row['index'], row['prod_name'], row['prod_id'], row['variant'], row['stock']) for row in dr]
                 self.loaddata()
-                print(self.ids)
+                flag1 = True
+                flag2 = False
+                idCheck = False
                 for id in self.ids:
                     for i in to_db:
                         if id[0] == i[2]:
-                            #Insert into this row.
+                            flag2 = True
+                            idCheck = True
                             self.incrementstock(i[2],int(i[4]))
+                for i in to_db:
+                    if i[4]:
+                        if i[1] and i[2]:
+                            if not idCheck:
+                                self.newentry(i)
+                                flag2 = True
+                    else:
+                        flag1 = False
             self.ui.label_4.setText(ntpath.basename(f[0]))
             self.ui.label_4.show()
             self.ui.pushButton.setText("Re-upload")
-            self.ui.pushButton_3.show()
-            self.ui.pushButton_3.clicked.connect(self.process)
+            if flag1 and flag2:
+                self.ui.pushButton_3.show()
+                self.ui.pushButton_3.clicked.connect(self.process)
+            elif not flag1:
+                self.ui.label_5.setText("One or more of the entries were invalid. Please check again.")
+            else:
+                self.ui.label_5.setText("File upload unsuccessful. Please try again.")
         except FileNotFoundError:
             self.ui.label_5.setText("File upload unsuccessful. Please try again.")
-            print("File upload unsuccessful. Please try again.")
 
 
     def close_win(self):
